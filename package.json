@@ -1,0 +1,56 @@
+{
+  "roleName": "webclient",
+  "version": "0.5.0",
+  "private": true,
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "history": "^4.7.2",
+    "i18next": "^10.2.1",
+    "i18next-browser-languagedetector": "^2.1.0",
+    "i18next-xhr-backend": "^1.5.0",
+    "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.4",
+    "material-ui": "^1.0.0-beta.35",
+    "material-ui-icons": "^1.0.0-beta.17",
+    "mdi-react": "^2.1.19",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-i18next": "^7.3.0",
+    "react-maskinput": "^1.0.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
+    "react-scripts": "1.0.17",
+    "react-select": "^1.2.1",
+    "redux": "^3.7.2",
+    "redux-form": "^7.2.0",
+    "redux-persist": "^5.9.1",
+    "redux-persist-transform-filter": "^0.0.16",
+    "redux-saga": "^0.16.0",
+    "typeface-roboto": "^0.0.45"
+  },
+  "scripts": {
+    "start:mockServer": "cd ../mockServer/ && yarn && yarn start &",
+    "start": "react-scripts start",
+    "start:develop": "yarn start:mockServer && yarn start",
+    "build": "react-scripts build",
+    "run:prod": "./run-build.sh && ./run-prod.sh",
+    "test": "react-scripts test --env=jsdom",
+    "test:ci":
+      "CI=true react-scripts test --env=jsdom --json --outputFile test-results.json",
+    "eject": "react-scripts eject",
+    "precommit": "lint-staged",
+    "prettier": "prettier --write src/**/*.{js,json,css,md} *.{js,json,css,md}"
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
+  },
+  "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
+  }
+}
