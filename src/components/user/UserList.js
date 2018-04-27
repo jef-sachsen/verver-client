@@ -119,7 +119,7 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, {
 })(TablePaginationActions);
 
 const ConnectedTablePaginationActionsWrapped = connect(
-  state => ({ meta: getMeta(apiMethod.list)(entity.contact)(state) }),
+  state => ({ meta: getMeta(apiMethod.list)(entity.user)(state) }),
   null
 )(TablePaginationActionsWrapped);
 
@@ -155,25 +155,25 @@ const styles = theme => ({
   }
 });
 
-class ContactList extends React.Component {
+class UserList extends React.Component {
   componentWillMount = () => {
-    const { fetchContactList, meta } = this.props;
+    const { fetchUserList, meta } = this.props;
     const { page = 0, size = 10 } = meta || {};
-    fetchContactList({ page, size });
+    fetchUserList({ page, size });
   };
 
   handleChangePage = (event, page) => {
-    const { fetchContactList, meta = {} } = this.props;
-    fetchContactList({ page, size: meta.size });
+    const { fetchUserList, meta = {} } = this.props;
+    fetchUserList({ page, size: meta.size });
   };
 
   handleChangeSize = event => {
-    const { fetchContactList, meta = {} } = this.props;
-    fetchContactList({ page: meta.page, size: event.target.value });
+    const { fetchUserList, meta = {} } = this.props;
+    fetchUserList({ page: meta.page, size: event.target.value });
   };
 
   render() {
-    const { classes, isLoading, contacts, meta = {}, t } = this.props;
+    const { classes, isLoading, users, meta = {}, t } = this.props;
     const emptyRows = 0;
 
     if (isLoading) {
@@ -192,10 +192,10 @@ class ContactList extends React.Component {
           <Card className={classes.card}>
             <CardContent>
               <Typography className={classes.title} color="textSecondary">
-                {t(`contact.listScreen.title`)}
+                {t(`user.listScreen.title`)}
               </Typography>
               <Typography variant="headline" component="h2">
-                {t(`contact.listScreen.headline`)}
+                {t(`user.listScreen.headline`)}
               </Typography>
             </CardContent>
             <CardContent>
@@ -203,27 +203,19 @@ class ContactList extends React.Component {
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t("contact.label.firstname")}</TableCell>
-                      <TableCell>{t("contact.label.lastname")}</TableCell>
-                      <TableCell>{t("contact.label.email")}</TableCell>
-                      <TableCell>{t("contact.label.phone")}</TableCell>
-                      <TableCell>{t("contact.label.address")}</TableCell>
-                      <TableCell>{t("contact.label.bankDetails")}</TableCell>
-                      <TableCell>{t("contact.label.edit")}</TableCell>
+                      <TableCell>{t("user.label.id")}</TableCell>
+                      <TableCell>{t("user.label.username")}</TableCell>
+                      <TableCell>{t("user.label.edit")}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {contacts.map(contact => {
+                    {users.map(user => {
                       return (
-                        <TableRow key={contact.id}>
-                          <TableCell>{contact.firstName}</TableCell>
-                          <TableCell>{contact.lastName}</TableCell>
-                          <TableCell>{contact.email}</TableCell>
-                          <TableCell>{contact.phone}</TableCell>
-                          <TableCell>{contact.address}</TableCell>
-                          <TableCell>{contact.bankDetails}</TableCell>
+                        <TableRow key={user.id}>
+                          <TableCell>{user.id}</TableCell>
+                          <TableCell>{user.username}</TableCell>
                           <TableCell>
-                            <Link to={`/contact/${contact.id}/edit`}>
+                            <Link to={`/user/edit/${user.id}`}>
                               <CreateIcon />
                             </Link>
                           </TableCell>
@@ -260,34 +252,30 @@ class ContactList extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const contacts = getItems(apiMethod.list)(entity.contact)(state);
-  const meta = getMeta(apiMethod.list)(entity.contact)(state);
-  const isFetchingContacts = getIsFetching(apiMethod.list)(entity.contact)(
-    state
-  );
-  const timeFetchedContacts = getTimeFetched(apiMethod.list)(entity.contact)(
-    state
-  );
+  const users = getItems(apiMethod.list)(entity.user)(state);
+  const meta = getMeta(apiMethod.list)(entity.user)(state);
+  const isFetchingUsers = getIsFetching(apiMethod.list)(entity.user)(state);
+  const timeFetchedUsers = getTimeFetched(apiMethod.list)(entity.user)(state);
 
   return {
-    isLoading: !timeFetchedContacts || isFetchingContacts,
-    isLoaded: !!timeFetchedContacts,
-    contacts,
+    isLoading: !timeFetchedUsers || isFetchingUsers,
+    isLoaded: !!timeFetchedUsers,
+    users,
     meta
   };
 };
 
 const mapDispatchToProps = {
-  fetchContactList: fetchList(entity.contact)
+  fetchUserList: fetchList(entity.user)
 };
 
-ContactList.propTypes = {
+UserList.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired
 };
 
-const ConnectedContactList = connect(mapStateToProps, mapDispatchToProps)(
-  ContactList
+const ConnectedUserList = connect(mapStateToProps, mapDispatchToProps)(
+  UserList
 );
 
-export default translate()(withStyles(styles)(ConnectedContactList));
+export default translate()(withStyles(styles)(ConnectedUserList));

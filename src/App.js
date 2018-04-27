@@ -17,7 +17,7 @@ import configureStore from "./redux/createStore";
 import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 
 import Login from "./components/Login";
-import UserList from "./components/UserList";
+import UserList from "./components/user/UserList";
 import UserCreateScreen from "./components/UserCreateScreen";
 import RoleCreateScreen from "./components/RoleCreateScreen";
 import LandingPage from "./components/LandingPage";

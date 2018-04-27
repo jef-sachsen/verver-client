@@ -47,7 +47,8 @@ export default {
         phone: "Phone",
         address: "Address",
         bankDetails: "Bank Details",
-        groups: "Groups"
+        groups: "Groups",
+        edit: "Edit"
       },
       placeholder: {
         groups: "Groups"
@@ -57,6 +58,19 @@ export default {
       create_user: "Create User"
     },
     user: {
+      listScreen: {
+        title: "List",
+        headline: "Users"
+      },
+      label: {
+        id: "ID",
+        username: "Email",
+        groups: "Groups",
+        edit: "Edit"
+      },
+      placeholder: {
+        groups: "Groups"
+      },
       cancel: "Cancel",
       delete: "Delete",
       error_message: "Oops! Something went wrong",
