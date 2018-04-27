@@ -190,7 +190,8 @@ export class UserCreateScreen extends Component {
       isUserWithErrors,
       values,
       id,
-      t
+      t,
+      canDelete
     } = this.props;
     const {
       username,
@@ -281,6 +282,7 @@ export class UserCreateScreen extends Component {
           onSubmit={this.handleSubmit}
           canSubmit={canSubmit}
           id={id}
+          canDelete={canDelete}
         />
         {alert}
         <Snackbar
@@ -310,19 +312,21 @@ const mapStateToProps = (state, ownProps) => {
   const isEdited = isEditedUser(state);
   const groupCreatedTime = getTimeFetchedUserList(state);
   const createUserError = getCreateUserError(state);
+  const user = getUserById(id)(state);
+  const values = getUserFormValues(state);
   return {
     users: getEntityItems(entity.user)(state),
     roles: getEntityItems(entity.role)(state),
     groups: getEntityItems(entity.group)(state),
     contacts: getEntityItems(entity.contact)(state),
-
-    values: getUserFormValues(state),
+    values,
+    canDelete: !(values || {}).admin && !(user || {}).admin,
     isFetching,
     isLoaded: !isFetching && !!timeFetchedUsers,
     isSent: !isCreating && !!groupCreatedTime && !createUserError,
     isEdited,
     id,
-    userForEdit: getUserById(id)(state),
+    userForEdit: user,
     isLoadedUsers: isLoadedUsers(state),
     isLoadedUser: isLoadedUser(state),
     isUserWithErrors: isUserWithErrors(state)

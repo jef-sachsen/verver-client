@@ -77,7 +77,8 @@ export class UserCreateForm extends React.Component {
       checkedEnabled,
       canSubmit,
       id,
-      t
+      t,
+      canDelete
     } = this.props;
     var validID = !!id || id === 0;
     return (
@@ -151,7 +152,8 @@ export class UserCreateForm extends React.Component {
               <Checkbox
                 checked={checkedAdmin}
                 name={"checkedAdmin"}
-                onChange={handleChangeCheckbox}
+                disabled={!canDelete}
+                onChange={canDelete ? handleChangeCheckbox : undefined}
                 label={t("user.checkBoxAdmin")}
               />
             </div>
@@ -171,7 +173,7 @@ export class UserCreateForm extends React.Component {
                 <Button color="primary">{t("user.cancel")}</Button>
               </Link>
             </div>
-            {!!validID ? (
+            {!!validID && canDelete ? (
               <div className={classes.buttonRow}>
                 <Button onClick={handleDelete} color="primary">
                   {t("user.delete")}

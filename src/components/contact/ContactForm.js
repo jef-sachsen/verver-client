@@ -41,7 +41,6 @@ export class ContactForm extends Component {
       handleChangeMultiGroups,
       multiGroups
     } = this.props;
-    console.log(this.props);
     const canSubmit = !(submitting || invalid || asyncValidating === true);
     return (
       <Form onSubmit={handleSubmit} className={classes.form}>
