@@ -1,6 +1,6 @@
 ## Status
 
-[![Build Status](https://ci.net1.leoek.eu/buildStatus/icon?job=swt/verver-build)](https://ci.net1.leoek.eu/job/swt/webclient)
+[![Build Status](https://ci.net1.leoek.eu/buildStatus/icon?job=swt/verver-client)](https://ci.net1.leoek.eu/job/swt/verver-client)
 
 ## Run
 
