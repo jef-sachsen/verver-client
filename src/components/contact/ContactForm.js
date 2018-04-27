@@ -22,7 +22,8 @@ const styles = theme => ({
     width: "100%"
   },
   formItem: {
-    margin: 8
+    margin: 8,
+    marginTop: 22
   }
 });
 
@@ -46,47 +47,28 @@ export class ContactForm extends Component {
       <Form onSubmit={handleSubmit} className={classes.form}>
         <CardContent>
           <Grid container spacing={24}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} lg={3}>
               <FormTextField
                 label={t("contact.label.email")}
                 name="email"
                 validate={[formValidations.required, formValidations.email]}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} lg={3}>
               <FormTextField
                 label={t("contact.label.firstname")}
                 name="firstName"
                 validate={[formValidations.required]}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} lg={3}>
               <FormTextField
                 label={t("contact.label.lastname")}
                 name="lastName"
                 validate={[formValidations.required]}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <FormTextField
-                label={t("contact.label.phone")}
-                name="phone"
-                validate={[formValidations.phone]}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormTextField
-                label={t("contact.label.address")}
-                name="address"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormTextField
-                label={t("contact.label.bankDetails")}
-                name="bankDetails"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} lg={3}>
               <div className={classes.formItem}>
                 {/*TODO: fix the reactselect component to work with redux-forms.*/}
                 <ReactSelect
@@ -99,6 +81,25 @@ export class ContactForm extends Component {
                   placeholder={t("contact.placeholder.groups")}
                 />
               </div>
+            </Grid>
+            <Grid item xs={12} md={6} lg={3}>
+              <FormTextField
+                label={t("contact.label.phone")}
+                name="phone"
+                validate={[formValidations.phone]}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={3}>
+              <FormTextField
+                label={t("contact.label.address")}
+                name="address"
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={3}>
+              <FormTextField
+                label={t("contact.label.bankDetails")}
+                name="bankDetails"
+              />
             </Grid>
           </Grid>
         </CardContent>
