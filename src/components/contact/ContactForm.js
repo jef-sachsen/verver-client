@@ -18,8 +18,11 @@ const styles = theme => ({
   actions: {
     width: "100%"
   },
-  formItem: {
+  reactSelect: {
     width: "100%"
+  },
+  formItem: {
+    margin: 8
   }
 });
 
@@ -84,16 +87,18 @@ export class ContactForm extends Component {
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              {/*TODO: fix the reactselect component to work with redux-forms.*/}
-              <ReactSelect
-                className={classes.formItem}
-                name={"selectGroups"}
-                options={optionsGroups}
-                handleChangeMulti={handleChangeMultiGroups}
-                multi={multiGroups}
-                canAddMultipleValues={true}
-                placeholder={t("contact.placeholder.groups")}
-              />
+              <div className={classes.formItem}>
+                {/*TODO: fix the reactselect component to work with redux-forms.*/}
+                <ReactSelect
+                  className={classes.reactSelect}
+                  name={"selectGroups"}
+                  options={optionsGroups}
+                  handleChangeMulti={handleChangeMultiGroups}
+                  multi={multiGroups}
+                  canAddMultipleValues={true}
+                  placeholder={t("contact.placeholder.groups")}
+                />
+              </div>
             </Grid>
           </Grid>
         </CardContent>
