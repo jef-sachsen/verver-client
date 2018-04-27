@@ -6,15 +6,14 @@ import { permission } from "../config/groupPermissionTypes";
 
 import GroupCreateForm from "./GroupCreateForm";
 import {
-  fetchList,
   fetchCreateByObject,
   fetchDeleteById,
   fetchUpdateByObject,
   fetchDetailById,
+  fetchAll,
   resetGroupCreateState
 } from "../redux/actions";
 import {
-  getUsers,
   getGroupFormValues,
   getTimeFetchedUsers,
   isFetchingUsers,
@@ -25,12 +24,12 @@ import {
   getGroupById,
   isLoadedGroups,
   isLoadedGroup,
-  isGroupWithErrors
+  isGroupWithErrors,
+  getEntityItems
 } from "../redux/selectors";
 import Screen from "./Screen";
 import PropTypes from "prop-types";
 import { entity } from "../lib/entity";
-import { getContacts } from "../redux/selectors/contactsSelectors";
 
 const styles = theme => ({
   progress: {
@@ -274,8 +273,8 @@ const mapStateToProps = (state, ownProps) => {
   const groupCreatedTime = getCreateGroupTimeFetched(state);
   const createGroupError = getCreateGroupError(state);
   return {
-    users: getUsers(state),
-    contacts: getContacts(state),
+    users: getEntityItems(entity.user)(state),
+    contacts: getEntityItems(entity.contact)(state),
     group: state.group.create,
     values: getGroupFormValues(state),
     isFetching,
@@ -291,8 +290,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-  fetchUsers: fetchList(entity.user),
-  fetchContacts: fetchList(entity.contact),
+  fetchUsers: fetchAll(entity.user),
+  fetchContacts: fetchAll(entity.contact),
   fetchCreateGroup: fetchCreateByObject(entity.group),
   fetchGroup: fetchDetailById(entity.group),
   fetchEditGroup: fetchUpdateByObject(entity.group),

@@ -5,19 +5,16 @@ import { CircularProgress, withStyles, Snackbar } from "material-ui";
 
 import UserCreateForm from "./UserCreateForm";
 import {
-  fetchList,
   fetchCreateByObject,
   fetchDeleteById,
   fetchUpdateByObject,
   fetchDetailById,
+  fetchAll,
   resetUserCreateState
 } from "../redux/actions";
 import {
-  getUsers,
   getTimeFetchedUsers,
   isFetchingUsers,
-  getGroups,
-  getRoles,
   getUserFormValues,
   isCreatingUser,
   isEditedUser,
@@ -26,12 +23,12 @@ import {
   getUserById,
   isLoadedUsers,
   isLoadedUser,
-  isUserWithErrors
+  isUserWithErrors,
+  getEntityItems
 } from "../redux/selectors";
 import Screen from "./Screen";
 import PropTypes from "prop-types";
 import { entity } from "../lib/entity";
-import { getContacts } from "../redux/selectors/contactsSelectors";
 
 const styles = theme => ({
   progress: {
@@ -89,10 +86,10 @@ export class UserCreateScreen extends Component {
       fetchUser,
       id
     } = this.props;
-    fetchUsers({});
-    fetchContacts({});
-    fetchRoles({});
-    fetchGroups({});
+    fetchUsers();
+    fetchContacts();
+    fetchRoles();
+    fetchGroups();
     if (!!id || id === 0) {
       fetchUser(id);
     }
@@ -310,10 +307,10 @@ const mapStateToProps = (state, ownProps) => {
   const groupCreatedTime = getTimeFetchedUserList(state);
   const createUserError = getCreateUserError(state);
   return {
-    users: getUsers(state),
-    roles: getRoles(state),
-    groups: getGroups(state),
-    contacts: getContacts(state),
+    users: getEntityItems(entity.user)(state),
+    roles: getEntityItems(entity.role)(state),
+    groups: getEntityItems(entity.group)(state),
+    contacts: getEntityItems(entity.contact)(state),
 
     values: getUserFormValues(state),
     isFetching,
@@ -329,10 +326,10 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-  fetchUsers: fetchList(entity.user),
-  fetchRoles: fetchList(entity.role),
-  fetchGroups: fetchList(entity.group),
-  fetchContacts: fetchList(entity.contact),
+  fetchUsers: fetchAll(entity.user),
+  fetchRoles: fetchAll(entity.role),
+  fetchGroups: fetchAll(entity.group),
+  fetchContacts: fetchAll(entity.contact),
 
   fetchCreateUser: fetchCreateByObject(entity.user),
   fetchUser: fetchDetailById(entity.user),

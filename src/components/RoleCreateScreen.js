@@ -9,12 +9,11 @@ import {
   fetchDeleteById,
   fetchUpdateByObject,
   fetchDetailById,
-  fetchList,
+  fetchAll,
   resetRoleCreateState
 } from "../redux/actions";
 import {
   getPermissions,
-  getUsers,
   getRoleFormValues,
   getTimeFetchedPermissions,
   isFetchingPermissions,
@@ -25,7 +24,8 @@ import {
   isLoadedRole,
   getRoleById,
   isLoadedRoles,
-  isRoleWithErrors
+  isRoleWithErrors,
+  getEntityItems
 } from "../redux/selectors";
 import Screen from "./Screen";
 import { entity } from "../lib/entity";
@@ -241,7 +241,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     permissions: getPermissions(state),
-    users: getUsers(state),
+    users: getEntityItems(entity.user)(state),
     role: state.role.create,
     roleForEdit: getRoleById(id)(state),
     values: getRoleFormValues(state),
@@ -257,10 +257,10 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-  fetchPermissions: fetchList(entity.permission),
-  fetchUsers: fetchList(entity.user),
+  fetchPermissions: fetchAll(entity.permission),
+  fetchUsers: fetchAll(entity.user),
   fetchCreateRole: fetchCreateByObject(entity.role),
-  fetchRoles: fetchList(entity.role),
+  fetchRoles: fetchAll(entity.role),
   fetchRole: fetchDetailById(entity.role),
   fetchEditRole: fetchUpdateByObject(entity.role),
   fetchDeleteRole: fetchDeleteById(entity.role),
