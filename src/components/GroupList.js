@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { Card, CardContent, Typography } from "material-ui";
 import { withStyles } from "material-ui/styles";
 import Table, {
   TableBody,
@@ -10,7 +11,6 @@ import Table, {
   TableRow,
   TableHead
 } from "material-ui/Table";
-import Paper from "material-ui/Paper";
 import IconButton from "material-ui/IconButton";
 import FirstPageIcon from "material-ui-icons/FirstPage";
 import KeyboardArrowLeft from "material-ui-icons/KeyboardArrowLeft";
@@ -24,7 +24,6 @@ import { connect } from "react-redux";
 import { translate } from "react-i18next";
 import CreateIcon from "material-ui-icons/Create";
 import DeleteIcon from "material-ui-icons/Delete";
-import Typography from "material-ui/Typography";
 import { getContacts } from "../redux/selectors/contactsSelectors";
 
 const actionsStyles = theme => ({
@@ -190,10 +189,15 @@ class GroupList extends React.Component {
 
     return (
       <Screen>
-        <Typography type="headline" component="h2" align="center">
-          {t("group_list.header")}
-        </Typography>
-        <Paper className={classes.root}>
+        <Card className={classes.root}>
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary">
+              {t(`group.listScreen.title`)}
+            </Typography>
+            <Typography variant="headline" component="h2">
+              {t(`group.listScreen.headline`)}
+            </Typography>
+          </CardContent>
           <div className={classes.tableWrapper}>
             <Table className={classes.table} align="center">
               <TableHead>
@@ -293,7 +297,7 @@ class GroupList extends React.Component {
               </TableFooter>
             </Table>
           </div>
-        </Paper>
+        </Card>
       </Screen>
     );
   }

@@ -43,7 +43,8 @@ const styles = theme => ({
     justifyContent: "center"
   },
   card: {
-    height: "100%"
+    height: "100%",
+    padding: theme.spacing.unit * 2
   },
   bullet: {
     display: "inline-block",

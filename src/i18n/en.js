@@ -90,6 +90,10 @@ export default {
       checkBoxEnabled: "Enabled"
     },
     role: {
+      listScreen: {
+        title: "List",
+        headline: "Roles"
+      },
       cancel: "Cancel",
       delete: "Delete",
       error_message: "Oops! Something went wrong",
@@ -124,6 +128,10 @@ export default {
       delete: "Delete"
     },
     group: {
+      listScreen: {
+        title: "List",
+        headline: "Groups"
+      },
       cancel: "Cancel",
       delete: "Delete",
       error_message: "Oops! Something went wrong",

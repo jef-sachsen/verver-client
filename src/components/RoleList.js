@@ -10,7 +10,7 @@ import Table, {
   TableRow,
   TableHead
 } from "material-ui/Table";
-import Paper from "material-ui/Paper";
+import { Card, CardContent, Typography } from "material-ui";
 import IconButton from "material-ui/IconButton";
 import FirstPageIcon from "material-ui-icons/FirstPage";
 import KeyboardArrowLeft from "material-ui-icons/KeyboardArrowLeft";
@@ -30,7 +30,6 @@ import { connect } from "react-redux";
 import { translate } from "react-i18next";
 import CreateIcon from "material-ui-icons/Create";
 import DeleteIcon from "material-ui-icons/Delete";
-import Typography from "material-ui/Typography";
 import { entity } from "../lib/entity";
 import { CircularProgress } from "material-ui";
 
@@ -205,10 +204,15 @@ class RoleList extends React.Component {
 
     return (
       <Screen>
-        <Typography type="headline" component="h2" align="center">
-          {t("role_list.header")}
-        </Typography>
-        <Paper className={classes.root}>
+        <Card className={classes.root}>
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary">
+              {t(`role.listScreen.title`)}
+            </Typography>
+            <Typography variant="headline" component="h2">
+              {t(`role.listScreen.headline`)}
+            </Typography>
+          </CardContent>
           <div className={classes.tableWrapper}>
             <Table className={classes.table} align="center">
               <TableHead>
@@ -288,7 +292,7 @@ class RoleList extends React.Component {
               </TableFooter>
             </Table>
           </div>
-        </Paper>
+        </Card>
       </Screen>
     );
   }
