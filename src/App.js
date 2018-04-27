@@ -24,7 +24,7 @@ import LandingPage from "./components/LandingPage";
 import GroupCreateScreen from "./components/GroupCreateScreen";
 import RoleList from "./components/RoleList";
 import GroupList from "./components/GroupList";
-import ContactList from "./components/ContactList";
+import { ContactListScreen, ContactDetailScreen } from "./components/contact";
 
 const { store, history, persistor } = configureStore();
 const theme = createMuiTheme({
@@ -56,7 +56,26 @@ class App extends Component {
                 <div>
                   <Route exact path="/" component={LandingPage} />
                   <Route exact path="/login" component={Login} />
-                  <Route exact path="/contact/list" component={ContactList} />
+                  <Route
+                    exact
+                    path="/contact/list"
+                    component={ContactListScreen}
+                  />
+                  <Route
+                    exact
+                    path="/contact/:id/edit"
+                    component={ContactDetailScreen}
+                  />
+                  <Route
+                    exact
+                    path="/contact/:id/detail"
+                    component={ContactDetailScreen}
+                  />
+                  <Route
+                    exact
+                    path="/contact/create"
+                    component={ContactDetailScreen}
+                  />
                   <Route exact path="/user/list" component={UserList} />
                   <Route
                     exact

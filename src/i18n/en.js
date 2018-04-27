@@ -3,6 +3,10 @@ export default {
     hello: "Hello",
     title: "Mitgliederverwaltung",
     cancel: "Cancel",
+    detailScreen: {
+      headline: "User {{name}}",
+      saveButtonLabel: "Save"
+    },
     login: {
       button_login: "Login",
       label_username: "Email",
@@ -17,6 +21,17 @@ export default {
       create: "Create",
       edit: "Edit",
       list: "List"
+    },
+    contact: {
+      label: {
+        email: "Email",
+        firstname: "First Name",
+        lastname: "Last Name",
+        phone: "Phone",
+        address: "Address",
+        bankDetails: "Bank Details",
+        groups: "Groups"
+      }
     },
     user_create_screen: {
       create_user: "Create User"

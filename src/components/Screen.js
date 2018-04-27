@@ -93,9 +93,18 @@ const styles = theme => {
       ...theme.mixins.toolbar
     },
     content: {
+      display: "flex",
       flexGrow: 1,
+      maxWidth: "100%",
       backgroundColor: theme.palette.background.default,
-      padding: theme.spacing.unit * 3
+      padding: theme.spacing.unit * 5,
+      paddingTop: 64 + theme.spacing.unit * 5
+    },
+    contentDrawerOpen: {
+      marginLeft: drawerWidth - 16
+    },
+    contentDrawerClosed: {
+      marginLeft: closedDrawerWidth - 16
     },
     noTextDecoration: {
       textDecoration: "none"
@@ -231,8 +240,14 @@ export class Screen extends React.Component {
             open={open}
           />
         </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
+
+        <div className={classes.toolbar} />
+        <main
+          className={classNames(
+            classes.content,
+            open ? classes.contentDrawerOpen : classes.contentDrawerClosed
+          )}
+        >
           {children}
         </main>
       </div>
