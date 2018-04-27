@@ -10,7 +10,8 @@ import {
   fetchLoginFailure,
   reduxRehydrationCompleted,
   fetchGenericSuccess,
-  fetchGenericFailure
+  fetchGenericFailure,
+  fetchAll
 } from "../actions";
 import {
   LOGOUT,
@@ -77,6 +78,8 @@ export function* fetchSaga(api, action) {
   };
   if (method === apiMethod.list) {
     // no todo yet
+  } else if (method === apiMethod.all) {
+    // no todo yet
   } else if (method === apiMethod.detail) {
     request.endpoint = `${entity.endpoint}/${data.id}`;
   } else if (method === apiMethod.create) {
@@ -116,9 +119,15 @@ export function* fetchSaga(api, action) {
 }
 
 export function* fetchSuccessSaga(action) {
-  const { method, entity } = action;
+  const { method, entity, payload = {} } = action;
+  const { data: { meta } } = payload || {};
   if (method === apiMethod.delete || method === apiMethod.create) {
     yield put(push(`/${entity.name}/list`));
+  }
+  if (method === apiMethod.all) {
+    if (meta && meta.hasNext && (meta.page || meta.page === 0)) {
+      yield put(fetchAll(entity)(meta.page + 1));
+    }
   }
 }
 

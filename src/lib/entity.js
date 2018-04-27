@@ -37,17 +37,18 @@ export const mergefetchRequest = action => state => {
 };
 export const mergefetchSuccess = action => state => {
   const { method, payload = {} } = action;
-  const { data: { content, ...rest }, timeFetched } = payload;
+  const { data: { content, meta }, timeFetched } = payload;
   const items = Array.isArray(content) ? content : [content];
+  const enhancedItems = items.map(item => ({ ...item, timeFetched }));
   if (apiMethod[method]) {
     return {
       ...state,
-      items: unionBy(items, state.items, "id"),
+      items: unionBy(enhancedItems, state.items, "id"),
       [method]: {
         ...state[method],
         isFetching: false,
         items: items.map(item => item && item.id),
-        meta: Array.isArray(content) ? rest : null,
+        meta,
         timeFetched
       }
     };

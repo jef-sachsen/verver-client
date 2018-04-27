@@ -6,6 +6,7 @@ import { reduxForm, Form } from "redux-form";
 import { translate } from "react-i18next";
 
 import { FormTextField, formValidations } from "../layout/FormFields";
+import ReactSelect from "../ReactSelect";
 
 const styles = theme => ({
   form: {
@@ -16,6 +17,9 @@ const styles = theme => ({
   },
   actions: {
     width: "100%"
+  },
+  formItem: {
+    width: "100%"
   }
 });
 
@@ -24,20 +28,17 @@ export class ContactForm extends Component {
     const {
       handleSubmit,
       onCancel,
-      pristine,
       invalid,
       submitting,
       asyncValidating,
       classes,
-      t
+      t,
+      optionsGroups = [],
+      handleChangeMultiGroups,
+      multiGroups
     } = this.props;
     console.log(this.props);
-    const canSubmit = !(
-      pristine ||
-      submitting ||
-      invalid ||
-      asyncValidating === true
-    );
+    const canSubmit = !(submitting || invalid || asyncValidating === true);
     return (
       <Form onSubmit={handleSubmit} className={classes.form}>
         <CardContent>
@@ -82,6 +83,18 @@ export class ContactForm extends Component {
                 name="bankDetails"
               />
             </Grid>
+            <Grid item xs={12} md={6}>
+              {/*TODO: fix the reactselect component to work with redux-forms.*/}
+              <ReactSelect
+                className={classes.formItem}
+                name={"selectGroups"}
+                options={optionsGroups}
+                handleChangeMulti={handleChangeMultiGroups}
+                multi={multiGroups}
+                canAddMultipleValues={true}
+                placeholder={t("contact.placeholder.groups")}
+              />
+            </Grid>
           </Grid>
         </CardContent>
         <CardActions className={classes.actions}>
@@ -115,7 +128,8 @@ ContactForm.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool
+  submitting: PropTypes.bool,
+  groups: PropTypes.array
 };
 
 export default reduxForm({ form: "contact" })(

@@ -19,6 +19,7 @@ export const getTimeFetched = getEntityMethodValue("timeFetched");
 export const getIsFetching = getEntityMethodValue("isFetching");
 
 export const getItemById = entity => id => state => {
+  const parsedId = parseInt(id, 10);
   const items = getEntityItems(entity)(state);
-  return find(items, item => item.id === id);
+  return find(items, item => item.id === parsedId);
 };

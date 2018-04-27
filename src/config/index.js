@@ -1,5 +1,6 @@
 export const apiMethod = {
   list: "list",
+  all: "all",
   detail: "detail",
   create: "create",
   update: "update",
@@ -14,6 +15,7 @@ export const detailScreenType = {
 
 export const apiHttpMethodMapping = {
   list: "get",
+  all: "get",
   detail: "get",
   create: "post",
   update: "put",
@@ -34,6 +36,9 @@ export const config = {
   ERROR: {
     NOCONNECTION: "NOCONNECTION",
     UNAUTHORIZED: "UNAUTHORIZED"
+  },
+  CONSTANTS: {
+    FETCH_ALL_SIZE: 100
   }
 };
 

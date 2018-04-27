@@ -68,11 +68,6 @@ class App extends Component {
                   />
                   <Route
                     exact
-                    path="/contact/:id/:type"
-                    component={ContactDetailScreen}
-                  />
-                  <Route
-                    exact
                     path="/contact/:type"
                     component={ContactDetailScreen}
                   />

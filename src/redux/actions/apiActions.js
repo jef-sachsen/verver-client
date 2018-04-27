@@ -1,4 +1,4 @@
-import { apiActionType, apiMethod } from "../../config";
+import { apiActionType, apiMethod, config } from "../../config";
 
 //API Actions
 export const CONNECTION_FAILURE = "CONNECTION_FAILURE";
@@ -23,15 +23,33 @@ export const fetchGeneric = method => entity => payload => ({
   payload
 });
 export const FETCH_GENERIC_SUCCESS = FETCH_GENERIC(apiActionType.success);
-export const fetchGenericSuccess = method => entity => data => ({
-  type: FETCH_GENERIC_SUCCESS,
-  method,
-  entity,
-  payload: {
-    timeFetched: new Date(),
-    data
-  }
-});
+export const fetchGenericSuccess = method => entity => data => {
+  const { content, pageable, ...rest } = data;
+  const meta = Array.isArray(content)
+    ? {
+        pageSize: pageable.pageSize,
+        pageNUmber: pageable.pageNumber,
+        sort: pageable.sort,
+        hasNext: !rest.last,
+        first: rest.first,
+        totalElements: rest.totalElements,
+        totalPages: rest.totalPages
+      }
+    : null;
+  const transformedData = {
+    content: content ? content : data,
+    meta
+  };
+  return {
+    type: FETCH_GENERIC_SUCCESS,
+    method,
+    entity,
+    payload: {
+      timeFetched: new Date(),
+      data: transformedData
+    }
+  };
+};
 export const FETCH_GENERIC_FAILURE = FETCH_GENERIC(apiActionType.failure);
 export const fetchGenericFailure = method => entity => error => ({
   type: FETCH_GENERIC_FAILURE,
@@ -47,6 +65,13 @@ export const fetchList = entity => parameters =>
   fetchGeneric(apiMethod.list)(entity)({ parameters });
 export const fetchListSuccess = fetchGenericSuccess(apiMethod.list);
 export const fetchListFailure = fetchGenericFailure(apiMethod.list);
+export const fetchAll = entity => (page = 0) =>
+  fetchGeneric(apiMethod.all)(entity)({
+    parameters: {
+      size: config.CONSTANTS.FETCH_ALL_SIZE,
+      page
+    }
+  });
 export const fetchDetail = fetchGeneric(apiMethod.detail);
 export const fetchDetailById = entity => id =>
   fetchGeneric(apiMethod.detail)(entity)({ data: { id } });

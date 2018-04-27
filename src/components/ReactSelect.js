@@ -234,7 +234,6 @@ export class ReactSelect extends React.Component {
 
 ReactSelect.propTypes = {
   classes: PropTypes.object.isRequired,
-  multi: PropTypes.object,
   options: PropTypes.array.isRequired,
   handleChangeMulti: PropTypes.func.isRequired
 };

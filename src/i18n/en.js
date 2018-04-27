@@ -32,7 +32,8 @@ export default {
         },
         saveButtonLabel: "Save",
         title: {
-          create: "Create"
+          create: "Create",
+          edit: "Edit"
         }
       },
       label: {
@@ -42,6 +43,9 @@ export default {
         phone: "Phone",
         address: "Address",
         bankDetails: "Bank Details",
+        groups: "Groups"
+      },
+      placeholder: {
         groups: "Groups"
       }
     },
