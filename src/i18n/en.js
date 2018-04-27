@@ -36,6 +36,10 @@ export default {
           edit: "Edit"
         }
       },
+      listScreen: {
+        title: "List",
+        headline: "Contacts"
+      },
       label: {
         email: "Email",
         firstname: "First Name",

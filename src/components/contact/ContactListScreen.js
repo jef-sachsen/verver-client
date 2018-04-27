@@ -1,23 +1,37 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "material-ui/styles";
 import Table, {
   TableBody,
   TableCell,
-  TableHead,
-  TableRow,
   TableFooter,
-  TablePagination
+  TablePagination,
+  TableRow
 } from "material-ui/Table";
-import { connect } from "react-redux";
-import { fetchList } from "../../redux/actions";
-import { getItems, getItemById } from "../../redux/selectors";
 import IconButton from "material-ui/IconButton";
+import FirstPageIcon from "material-ui-icons/FirstPage";
 import KeyboardArrowLeft from "material-ui-icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "material-ui-icons/KeyboardArrowRight";
-import Screen from "../Screen";
-import { entity } from "../../lib/entity";
+import LastPageIcon from "material-ui-icons/LastPage";
+import CreateIcon from "material-ui-icons/Create";
+
+import { connect } from "react-redux";
+import { translate } from "react-i18next";
+import { Link } from "react-router-dom";
+
+import { CircularProgress, Card, CardContent, Typography } from "material-ui";
+
 import { apiMethod } from "../../config";
+import { entity } from "../../lib/entity";
+import {
+  getMeta,
+  getItems,
+  getIsFetching,
+  getTimeFetched
+} from "../../redux/selectors";
+import { fetchList } from "../../redux/actions";
+
+import Screen from "../Screen";
 
 const actionsStyles = theme => ({
   root: {
@@ -28,6 +42,10 @@ const actionsStyles = theme => ({
 });
 
 class TablePaginationActions extends React.Component {
+  handleFirstPageButtonClick = event => {
+    this.props.onChangePage(event, 0);
+  };
+
   handleBackButtonClick = event => {
     this.props.onChangePage(event, this.props.page - 1);
   };
@@ -36,11 +54,22 @@ class TablePaginationActions extends React.Component {
     this.props.onChangePage(event, this.props.page + 1);
   };
 
+  handleLastPageButtonClick = event => {
+    this.props.onChangePage(event, this.props.totalPages - 1);
+  };
+
   render() {
-    const { classes, count, page, rowsPerPage, theme } = this.props;
+    const { classes, page, theme, meta } = this.props;
 
     return (
       <div className={classes.root}>
+        <IconButton
+          onClick={this.handleFirstPageButtonClick}
+          disabled={page === 0}
+          aria-label="First Page"
+        >
+          {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+        </IconButton>
         <IconButton
           onClick={this.handleBackButtonClick}
           disabled={page === 0}
@@ -54,7 +83,7 @@ class TablePaginationActions extends React.Component {
         </IconButton>
         <IconButton
           onClick={this.handleNextButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          disabled={!meta.hasNext}
           aria-label="Next Page"
         >
           {theme.direction === "rtl" ? (
@@ -62,6 +91,13 @@ class TablePaginationActions extends React.Component {
           ) : (
             <KeyboardArrowRight />
           )}
+        </IconButton>
+        <IconButton
+          onClick={this.handleLastPageButtonClick}
+          disabled={page === meta.totalPages - 1}
+          aria-label="Last Page"
+        >
+          {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
         </IconButton>
       </div>
     );
@@ -81,127 +117,165 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, {
   withTheme: true
 })(TablePaginationActions);
 
+const ConnectedTablePaginationActionsWrapped = connect(
+  state => ({ meta: getMeta(apiMethod.list)(entity.contact)(state) }),
+  null
+)(TablePaginationActionsWrapped);
+
 const styles = theme => ({
+  progress: {
+    margin: theme.spacing.unit * 2
+  },
+  progressContainer: {
+    width: "100%",
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  card: {
+    height: "100%",
+    width: "100%"
+  },
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3,
-    overflowX: "auto"
+    marginTop: theme.spacing.unit * 3
   },
   table: {
-    minWidth: "20%",
-    maxWidth: "90%"
+    minWidth: 500
+  },
+  wrapper: {
+    flexGrow: 1,
+    display: "flex",
+    width: "100%"
   },
   tableWrapper: {
     overflowX: "auto"
   }
 });
 
-class ContactList extends Component {
+class ContactList extends React.Component {
   componentWillMount = () => {
-    const { fetchContacts } = this.props;
-    fetchContacts();
+    const { fetchContactList, meta } = this.props;
+    const { page = 0, size = 10 } = meta || {};
+    fetchContactList({ page, size });
   };
-
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      page: 0,
-      rowsPerPage: 5
-    };
-  }
 
   handleChangePage = (event, page) => {
-    this.setState({ page });
+    const { fetchContactList, meta = {} } = this.props;
+    fetchContactList({ page, size: meta.size });
   };
 
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
+  handleChangeSize = event => {
+    const { fetchContactList, meta = {} } = this.props;
+    fetchContactList({ page: meta.page, size: event.target.value });
   };
 
   render() {
-    const { classes, users } = this.props;
-    const { rowsPerPage, page } = this.state;
+    const { classes, isLoading, contacts, meta = {}, t } = this.props;
+    const emptyRows = 0;
 
-    //console.log("Render a component", users, this.props.user(6));
+    if (isLoading) {
+      return (
+        <Screen>
+          <div className={classes.progressContainer}>
+            <CircularProgress className={classes.progress} />
+          </div>
+        </Screen>
+      );
+    }
+
     return (
       <Screen>
-        <h2 align="center">Übersicht aller Mitglieder</h2>
-        {users ? (
-          <div>
-            <Table className={classes.table} align="center">
-              <TableHead>
-                <TableRow>
-                  <TableCell numeric>Mitgliedsnummer</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell style={{ width: 250 }}>Rollen</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(user => {
-                    return (
-                      <TableRow key={user.id}>
-                        <TableCell numeric>{user.id}</TableCell>
-                        <TableCell>
-                          {user.firstName} {user.lastName}
-                        </TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>
-                          {user.roles ? (
-                            <div>
-                              {user.roles.map(role => {
-                                return <p key={role.id}>{role.name}</p>;
-                              })}
-                            </div>
-                          ) : null}
-                        </TableCell>
+        <div className={classes.wrapper}>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography className={classes.title} color="textSecondary">
+                {t(`contact.listScreen.title`)}
+              </Typography>
+              <Typography variant="headline" component="h2">
+                {t(`contact.listScreen.headline`)}
+              </Typography>
+            </CardContent>
+            <CardContent>
+              <div className={classes.tableWrapper}>
+                <Table className={classes.table}>
+                  <TableBody>
+                    {contacts.map(contact => {
+                      return (
+                        <TableRow key={contact.id}>
+                          <TableCell>{contact.firstName}</TableCell>
+                          <TableCell>{contact.lastName}</TableCell>
+                          <TableCell>{contact.email}</TableCell>
+                          <TableCell>{contact.phone}</TableCell>
+                          <TableCell>{contact.address}</TableCell>
+                          <TableCell>{contact.bankDetails}</TableCell>
+                          <TableCell>
+                            <Link to={`/contact/${contact.id}/edit`}>
+                              <CreateIcon />
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 48 * emptyRows }}>
+                        <TableCell colSpan={6} />
                       </TableRow>
-                    );
-                  })}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    colSpan={3}
-                    count={users.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={this.handleChangePage}
-                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                    Actions={TablePaginationActionsWrapped}
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </div>
-        ) : (
-          <div align="center">Es existieren keine Mitglieder!</div>
-        )}
+                    )}
+                  </TableBody>
+                  <TableFooter>
+                    <TableRow>
+                      <TablePagination
+                        colSpan={3}
+                        count={meta.totalElements}
+                        rowsPerPage={meta.size}
+                        page={meta.page}
+                        onChangePage={this.handleChangePage}
+                        onChangeRowsPerPage={this.handleChangeSize}
+                        Actions={ConnectedTablePaginationActionsWrapped}
+                      />
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </Screen>
     );
   }
 }
 
-ContactList.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+const mapStateToProps = (state, ownProps) => {
+  const contacts = getItems(apiMethod.list)(entity.contact)(state);
+  const meta = getMeta(apiMethod.list)(entity.contact)(state);
+  const isFetchingContacts = getIsFetching(apiMethod.list)(entity.contact)(
+    state
+  );
+  const timeFetchedContacts = getTimeFetched(apiMethod.list)(entity.contact)(
+    state
+  );
 
-const mapStateToProps = state => {
   return {
-    contacts: getItems(apiMethod.list)(entity.contact)(state),
-    getContactById: id => getItemById(entity.contact)(id)(state)
+    isLoading: !timeFetchedContacts || isFetchingContacts,
+    isLoaded: !!timeFetchedContacts,
+    contacts,
+    meta
   };
 };
 
 const mapDispatchToProps = {
-  fetchContacts: fetchList(entity.contact)
+  fetchContactList: fetchList(entity.contact)
 };
 
-export const ConnectedContactList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ContactList);
+ContactList.propTypes = {
+  classes: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired
+};
 
-export default withStyles(styles)(ConnectedContactList);
+const ConnectedContactList = connect(mapStateToProps, mapDispatchToProps)(
+  ContactList
+);
+
+export default translate()(withStyles(styles)(ConnectedContactList));

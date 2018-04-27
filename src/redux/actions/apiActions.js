@@ -27,8 +27,8 @@ export const fetchGenericSuccess = method => entity => data => {
   const { content, pageable, ...rest } = data;
   const meta = Array.isArray(content)
     ? {
-        pageSize: pageable.pageSize,
-        pageNUmber: pageable.pageNumber,
+        size: pageable.pageSize,
+        page: pageable.pageNumber,
         sort: pageable.sort,
         hasNext: !rest.last,
         first: rest.first,

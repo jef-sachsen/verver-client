@@ -172,7 +172,7 @@ export class DetailScreen extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const id = get(ownProps, "match.params.id");
-  const type = get(ownProps, "match.params.type");
+  const type = get(ownProps, "match.params.type") || "create";
   const contact = getContactById(id)(state);
   const groups = getEntityItems(entity.group)(state);
 
