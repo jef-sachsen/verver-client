@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { translate } from "react-i18next";
 import { CircularProgress, withStyles, Snackbar } from "material-ui";
-
+import { get } from "lodash";
 import UserCreateForm from "./UserCreateForm";
 import {
   fetchCreateByObject,
@@ -24,7 +24,8 @@ import {
   isLoadedUsers,
   isLoadedUser,
   isUserWithErrors,
-  getEntityItems
+  getEntityItems,
+  getUserIdFromToken
 } from "../redux/selectors";
 import Screen from "./Screen";
 import PropTypes from "prop-types";
@@ -297,7 +298,10 @@ export class UserCreateScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const id = parseInt(ownProps.match.params.id, 10);
+  const isProfile = get(ownProps, "match.path") === "/profile";
+  const id = isProfile
+    ? getUserIdFromToken(state)
+    : parseInt(ownProps.match.params.id, 10);
   const isFetching = isFetchingUsers(state);
   //todo replace with timeFetchedUsers
   const timeFetchedUsers = getTimeFetchedUsers(state);

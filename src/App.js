@@ -66,6 +66,12 @@ class App extends Component {
                     path="/contact/:id/:type"
                     component={ContactDetailScreen}
                   />
+                  <Route exact path="/profile" component={UserCreateScreen} />
+                  <Route
+                    exact
+                    path="/profile"
+                    component={ContactDetailScreen}
+                  />
                   <Route
                     exact
                     path="/contact/create"
@@ -82,7 +88,6 @@ class App extends Component {
                     path="/user/create"
                     component={UserCreateScreen}
                   />
-                  <Route exact path="/profile" component={UserCreateScreen} />
                   <Route exact path="/role/list" component={RoleList} />
                   <Route
                     exact

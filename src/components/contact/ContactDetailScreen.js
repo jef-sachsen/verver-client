@@ -17,7 +17,8 @@ import {
   getContactById,
   getEntityItems,
   getContactFormValues,
-  getIsFetching
+  getIsFetching,
+  getContactIdFromToken
 } from "../../redux/selectors";
 import { entity } from "../../lib/entity";
 import { detailScreenType, apiMethod } from "../../config";
@@ -172,7 +173,10 @@ export class DetailScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const id = get(ownProps, "match.params.id");
+  const isProfile = get(ownProps, "match.path") === "/profile";
+  const id = isProfile
+    ? getContactIdFromToken(state)
+    : get(ownProps, "match.params.id");
   const type = get(ownProps, "match.params.type") || "create";
   const contact = getContactById(id)(state);
   const groups = getEntityItems(entity.group)(state);
