@@ -63,17 +63,17 @@ class App extends Component {
                   />
                   <Route
                     exact
-                    path="/contact/:id/edit"
+                    path="/contact/:id/:type"
                     component={ContactDetailScreen}
                   />
                   <Route
                     exact
-                    path="/contact/:id/detail"
+                    path="/contact/:id/:type"
                     component={ContactDetailScreen}
                   />
                   <Route
                     exact
-                    path="/contact/create"
+                    path="/contact/:type"
                     component={ContactDetailScreen}
                   />
                   <Route exact path="/user/list" component={UserList} />

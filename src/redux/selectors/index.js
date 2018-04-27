@@ -8,3 +8,4 @@ export * from "./permissionSelectors";
 export * from "./roleSelectors";
 export * from "./userSelectors";
 export * from "./groupSelectors";
+export * from "./contactsSelectors";

@@ -18,7 +18,7 @@ export const getError = getEntityMethodValue("error");
 export const getTimeFetched = getEntityMethodValue("timeFetched");
 export const getIsFetching = getEntityMethodValue("isFetching");
 
-export const getItemById = method => entity => id => state => {
-  const items = getItems(method)(entity)(state);
+export const getItemById = entity => id => state => {
+  const items = getEntityItems(entity)(state);
   return find(items, item => item.id === id);
 };

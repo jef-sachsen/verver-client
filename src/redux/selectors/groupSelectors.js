@@ -4,7 +4,7 @@ import { entity } from "../../lib/entity";
 import { getItems, getItemById } from "./entitySelectors";
 
 export const getGroups = getItems(apiMethod.list)(entity.group);
-export const getGroupById = getItemById(apiMethod.list)(entity.group);
+export const getGroupById = getItemById(entity.group);
 
 export const isLoadedGroups = state =>
   !get(state, "group.list.isFetching", false) &&

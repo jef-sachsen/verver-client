@@ -8,7 +8,7 @@ import { entity } from "../../lib/entity";
 import { apiMethod } from "../../config";
 
 export const getContacts = getItems(apiMethod.list)(entity.contact);
-export const getContactById = getItemById(apiMethod.list)(entity.contact);
+export const getContactById = getItemById(entity.contact);
 export const isFetchingContactList = getIsFetching(apiMethod.list)(
   entity.contact
 );

@@ -3,9 +3,10 @@ export default {
     hello: "Hello",
     title: "Mitgliederverwaltung",
     cancel: "Cancel",
-    detailScreen: {
-      headline: "User {{name}}",
-      saveButtonLabel: "Save"
+    validation: {
+      invalid_email_address: "Invalid Email Address",
+      required: "Required",
+      invalid_phone_number: "Invalid Phonenumber"
     },
     login: {
       button_login: "Login",
@@ -23,6 +24,17 @@ export default {
       list: "List"
     },
     contact: {
+      detailScreen: {
+        headline: {
+          create: "New Contact",
+          edit: "Contact {{name}}",
+          view: "Contact {{name}}"
+        },
+        saveButtonLabel: "Save",
+        title: {
+          create: "Create"
+        }
+      },
       label: {
         email: "Email",
         firstname: "First Name",

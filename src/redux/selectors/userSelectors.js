@@ -9,7 +9,7 @@ import { apiMethod } from "../../config";
 import { get } from "lodash";
 
 export const getUsers = getItems(apiMethod.list)(entity.user);
-export const getUserById = getItemById(apiMethod.list)(entity.user);
+export const getUserById = getItemById(entity.user);
 export const isFetchingUserList = getIsFetching(apiMethod.list)(entity.user);
 export const getTimeFetchedUserList = getTimeFetched(apiMethod.list)(
   entity.user

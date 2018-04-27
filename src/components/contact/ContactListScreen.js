@@ -191,7 +191,7 @@ ContactList.propTypes = {
 const mapStateToProps = state => {
   return {
     contacts: getItems(apiMethod.list)(entity.contact)(state),
-    getContactById: id => getItemById(apiMethod.list)(entity.contact)(id)(state)
+    getContactById: id => getItemById(entity.contact)(id)(state)
   };
 };
 

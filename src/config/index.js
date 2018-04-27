@@ -6,6 +6,12 @@ export const apiMethod = {
   delete: "delete"
 };
 
+export const detailScreenType = {
+  view: "view",
+  edit: "edit",
+  create: "create"
+};
+
 export const apiHttpMethodMapping = {
   list: "get",
   detail: "get",

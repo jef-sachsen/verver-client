@@ -4,7 +4,7 @@ import { entity } from "../../lib/entity";
 import { getItems, getItemById } from "./entitySelectors";
 
 export const getRoles = getItems(apiMethod.list)(entity.role);
-export const getRoleById = getItemById(apiMethod.list)(entity.role);
+export const getRoleById = getItemById(entity.role);
 
 export const getCreateRole = state => get(state, "role.create");
 
