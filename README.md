@@ -1,7 +1,6 @@
 ## Status
 
-Tests: [![Build Status](https://ci.net1.leoek.eu/buildStatus/icon?job=swt/webclient-test)](https://ci.net1.leoek.eu/job/swt/webclient-test)
-Build: [![Build Status](https://ci.net1.leoek.eu/buildStatus/icon?job=swt/webclient-build)](https://ci.net1.leoek.eu/job/swt/webclient)
+[![Build Status](https://ci.net1.leoek.eu/buildStatus/icon?job=swt/verver-build)](https://ci.net1.leoek.eu/job/swt/webclient)
 
 ## Run
 
